@@ -44,28 +44,28 @@ public class Organo {
 	 * @return true o false
 	 */
 	public boolean revision() {
-		if (nombre == "Cerebro" && posicion == CABEZA && importancia == VITAL) {
+		if (nombre.equals("Cerebro") && posicion == CABEZA && importancia == VITAL) {
 			return true;
 		}
-		if (nombre == "Corazon" && posicion == TRONCO_SUPERIOR && importancia == VITAL) {
+		if (nombre.equals("Corazon") && posicion == TRONCO_SUPERIOR && importancia == VITAL) {
 			return true;
 		}
-		if (nombre == "Pulmon derecho" && posicion == TRONCO_SUPERIOR && importancia == VITAL) {
+		if (nombre.equals("Pulmon derecho") && posicion == TRONCO_SUPERIOR && importancia == VITAL) {
 			return true;
 		}
-		if (nombre == "Pulmon izquierdo" && posicion == TRONCO_SUPERIOR && importancia == VITAL) {
+		if (nombre.equals("Pulmon izquierdo") && posicion == TRONCO_SUPERIOR && importancia == VITAL) {
 			return true;
 		}
-		if (nombre == "Riñon derecho" && posicion == TRONCO_INFERIOR && importancia == BASICA) {
+		if (nombre.equals("Riñon derecho") && posicion == TRONCO_INFERIOR && importancia == BASICA) {
 			return true;
 		}
-		if (nombre == "Riñon izquierdo" && posicion == TRONCO_INFERIOR && importancia == BASICA) {
+		if (nombre.equals("Riñon izquierdo") && posicion == TRONCO_INFERIOR && importancia == BASICA) {
 			return true;
 		}
-		if (nombre == "Estomago" && posicion == TRONCO_INFERIOR && importancia == SECUNDARIA) {
+		if (nombre.equals("Estomago") && posicion == TRONCO_INFERIOR && importancia == SECUNDARIA) {
 			return true;
 		}
-		if (nombre == "Oido" && posicion == CABEZA && importancia == SECUNDARIA) {
+		if (nombre.equals("Oido") && posicion == CABEZA && importancia == SECUNDARIA) {
 			return true;
 		}
 		return false;
@@ -107,7 +107,7 @@ public class Organo {
 	 * Método constructor vacío que da valores aleatorios de Organo
 	 */
 	public Organo() {
-		switch ((int) (Math.random() * 8)) {
+		switch ((int) ((Math.random() * 8) + 1)) {
 		case CEREBRO:
 			this.nombre = "Cerebro";
 			this.funcion = "Pensamiento, emoción, conducta, movimiento y sensación";

@@ -4,10 +4,10 @@ public class pruebaCuerpo {
 	public static void main(String[] args) {
 		// Creamos un nuevo objeto Organo
 		Organo organo = new Organo();
-		System.out.println(organo);
+		// System.out.println(organo);
 
 		Organo corazon = new Organo("Corazon", "servir", 1, 400, Organo.TRONCO_SUPERIOR, Organo.VITAL, "hola", true);
-		System.out.println(corazon);
+		// System.out.println(corazon);
 
 		Cuerpo juan = new Cuerpo();
 		System.out.println(juan);
@@ -23,13 +23,13 @@ public class pruebaCuerpo {
 		Organo organo3 = new Organo("Pulmon derecho", "servir", Organo.DOLOR, 300.0, Organo.TRONCO_SUPERIOR,
 				Organo.VITAL, "Imagen", false);
 		listaOrganos[2] = organo3;
-		Organo organo4 = new Organo("Pulmon izquierdo", "servir", Organo.DOLOR, 300.0, Organo.TRONCO_SUPERIOR,
+		Organo organo4 = new Organo("Pulmon izquierdo", "servir", Organo.PERJUDICADO, 300.0, Organo.TRONCO_SUPERIOR,
 				Organo.VITAL, "Imagen", false);
 		listaOrganos[3] = organo4;
 		Organo organo5 = new Organo("Riñon derecho", "servir", Organo.PERJUDICADO, 300.0, Organo.TRONCO_INFERIOR,
 				Organo.BASICA, "Imagen", false);
 		listaOrganos[4] = organo5;
-		Organo organo6 = new Organo("Riñon izquierdo", "servir", Organo.PERJUDICADO, 300.0, Organo.TRONCO_INFERIOR,
+		Organo organo6 = new Organo("Riñon izquierdo", "servir", Organo.SANO, 300.0, Organo.TRONCO_INFERIOR,
 				Organo.BASICA, "Imagen", false);
 		listaOrganos[5] = organo6;
 		Organo organo7 = new Organo("Estomago", "servir", Organo.DOLOR, 300.0, Organo.TRONCO_INFERIOR,
@@ -54,7 +54,7 @@ public class pruebaCuerpo {
 		System.out.println(juan);
 
 		// Prueba de funcion cura
-//		System.out.println("Función cura:" + juan.cura(listaOrganos[2]));
+		System.out.println("Función cura:" + juan.cura(listaOrganos[2]));
 
 		// Prueba de funcion oncológica
 		System.out.println("Prueba oncológica: " + juan.oncologia());
@@ -62,7 +62,8 @@ public class pruebaCuerpo {
 		// Prueba de funcion revisionGeneral
 		int[] codigos = juan.revisionGeneral();
 		for (int codigo : codigos) {
-			System.out.println("Enfermedad con código " + codigo);
+			if (codigo != 0)
+				System.out.println("Enfermedad con código " + codigo);
 		}
 	}
 }

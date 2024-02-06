@@ -70,7 +70,7 @@ public class Cuerpo {
 			// Se mira si el órgano está perjudicado
 			if (O.analisis(2) == true) {
 				// Si el órgano es Corazón o Cerebro devuelve null
-				if (O.getNombre() == "Cerebro" || O.getNombre() == "Corazon") {
+				if (O.getNombre().equals("Cerebro") || O.getNombre().equals("Corazon")) {
 					// Al ser vital el cuerpo muere
 					this.estado = "MUERTO";
 					return null;
@@ -100,7 +100,7 @@ public class Cuerpo {
 	 * favorable hará el transplante
 	 * 
 	 * @param O
-	 * @return
+	 * @return -1 si sale mal, 0 si sale bien
 	 */
 	int transplante(Organo O) {
 		// Boolean que determina si hemos encontrado un órgano al que hacerle el
@@ -109,7 +109,7 @@ public class Cuerpo {
 		// Bucle que recorre todos los organos
 		for (int i = 0; i < organos.length; i++) {
 			// Busca que el cuerpo tenga el mismo órgano para el transplante
-			if (organos[i].getNombre() == O.getNombre()) {
+			if (organos[i].getNombre().equals(O.getNombre())) {
 				// Si lo encuentra, cambia a true la variable
 				organoEncontrado = true;
 				// Hace una revisión de los dos órganos
@@ -159,108 +159,100 @@ public class Cuerpo {
 	 * Función que realiza una revisión general del cuerpo para ver que enfermedades
 	 * tiene
 	 * 
+	 * 1-> malaria
+	 * 
+	 * 2-> parkinson
+	 * 
+	 * 3-> Bronquitis
+	 * 
+	 * 4-> gripe
+	 * 
+	 * 5-> cancer
+	 * 
+	 * 6-> sano
+	 * 
 	 * @return Un array con las diferentes enfermedades
 	 */
 	int[] revisionGeneral() {
-		// Variable para contar el número de enfermedades para saber cuanto médira el
-		// array
-		int numEnfermedades = 0;
-		// Variables para guardar el estado de los órganos
-		int estadoCerebro = 0;
-		int estadoRiñonIzq = 0;
-		int estadoOido = 0;
-		int estadoRiñonDer = 0;
-		int estadoPulmonIzq = 0;
-		int estadoPulmonDer = 0;
-		int estadoEstomago = 0;
-		// Array con los códigos
-		int[] codigos;
-		// Bucle que recorre todos los órganos y va almacenando el estado de los mismos
+		// Creamos un array de cinco huecos
+		int[] codigos = new int[5];
+		// variables internas
+		int contador = 0;
+		boolean tieneMalaria = false;
+		boolean tieneParkinson = false;
+		boolean tieneBronquitis = false;
+		boolean tieneGripe = false;
+		// Bucle que recorre todos los órganos
 		for (int i = 0; i < organos.length; i++) {
-			if (organos[i].getNombre() == "Cerebro") {
-				estadoCerebro = organos[i].getEstado();
-			} else if (organos[i].getNombre() == "Riñon izquierdo") {
-				estadoRiñonIzq = organos[i].getEstado();
-			} else if (organos[i].getNombre() == "Riñon derecho") {
-				estadoRiñonDer = organos[i].getEstado();
-			} else if (organos[i].getNombre() == "Oido") {
-				estadoOido = organos[i].getEstado();
-			} else if (organos[i].getNombre() == "Pulmon derecho") {
-				estadoPulmonDer = organos[i].getEstado();
-			} else if (organos[i].getNombre() == "Pulmon izquierdo") {
-				estadoPulmonIzq = organos[i].getEstado();
-			} else if (organos[i].getNombre() == "Estomago") {
-				estadoEstomago = organos[i].getEstado();
+			// Si encuentra un cerebro y tiene dolor
+			if (organos[i].getNombre().equals("Cerebro") && organos[i].getEstado() == Organo.DOLOR) {
+				// Recorre todos los organos
+				for (int j = 0; j < organos.length; j++) {
+					// Si no tiene malaria y tiene algún riñón perjudicado
+					if (!tieneMalaria
+							&& (organos[j].getNombre().equals("Riñon izquierdo")
+									|| organos[j].getNombre().equals("Riñon derecho"))
+							&& organos[j].getEstado() == Organo.PERJUDICADO) {
+						// Tiene malaria
+						tieneMalaria = true;
+						// Lo metemos en el array
+						codigos[contador] = 1;
+						contador++;
+						// Si no tiene bronquitis, y tiene algún pulmon perjudicado
+					} else if (!tieneBronquitis
+							&& (organos[j].getNombre().equals("Pulmon izquierdo")
+									|| organos[j].getNombre().equals("Pulmon derecho"))
+							&& organos[j].getEstado() == Organo.PERJUDICADO) {
+						// Tiene bronquitis
+						tieneBronquitis = true;
+						// Lo metemos en el array
+						codigos[contador] = 3;
+						contador++;
+						// Si no tiene gripe y tiene el estomago con dolor
+					} else if (!tieneGripe && organos[j].getNombre().equals("Estomago")
+							&& organos[j].getEstado() == Organo.DOLOR) {
+						// Bucle que recorre todos los órganos
+						for (int z = 0; z < organos.length; z++) {
+							// Si tiene un pulmon con dolor
+							if ((organos[z].getNombre().equals("Pulmon izquierdo")
+									|| organos[z].getNombre().equals("Pulmon derecho"))
+									&& organos[z].getEstado() == Organo.DOLOR) {
+								// tiene gripe
+								tieneGripe = true;
+								// Lo metemos en el array
+								codigos[contador] = 4;
+								contador++;
+							}
+						}
+					}
+				}
+				// Si tiene el cerebro perjudicado
+			} else if (organos[i].getNombre().equals("Cerebro") && organos[i].getEstado() == Organo.PERJUDICADO) {
+				// Bucle que recorre todos los organos
+				for (int j = 0; j < organos.length; j++) {
+					// Si no tiene parkinson y tiene el oido perjudicado
+					if (!tieneParkinson && organos[j].getNombre().equals("Oido")
+							&& organos[j].getEstado() == Organo.PERJUDICADO) {
+						// tiene parkinson
+						tieneParkinson = true;
+						// Lo metemos en el array
+						codigos[contador] = 2;
+						contador++;
+					}
+				}
 			}
 		}
-
-		// Condiciones que comprueban si el cuerpo tiene alguna enfermedad, si tiene
-		// alguna, suma en uno la variable numEnfermedades
-		if (estadoCerebro == Organo.DOLOR && estadoRiñonIzq == Organo.PERJUDICADO
-				&& estadoRiñonDer == Organo.PERJUDICADO) {
-			numEnfermedades++;
-		}
-		if (estadoOido == Organo.PERJUDICADO && estadoCerebro == Organo.PERJUDICADO) {
-			numEnfermedades++;
-		}
-		if (estadoCerebro == Organo.DOLOR && estadoPulmonIzq == Organo.PERJUDICADO
-				&& estadoPulmonDer == Organo.PERJUDICADO) {
-			numEnfermedades++;
-		}
-		if (estadoCerebro == Organo.DOLOR && estadoEstomago == Organo.DOLOR && estadoPulmonDer == Organo.DOLOR
-				&& estadoPulmonIzq == Organo.DOLOR) {
-			numEnfermedades++;
-		}
+		// Si tiene cancer
 		if (oncologia()) {
-			numEnfermedades++;
+			// Lo metemos en el array
+			codigos[contador] = 5;
+			contador++;
 		}
-
-		if (numEnfermedades != 0) {
-			// Si tiene enfermedades, formateamos el array con numEnfermedades
-			codigos = new int[numEnfermedades];
-			// Creamos un contador para introducir los códigos dentro del array
-			int contador = 0;
-
-			if (estadoCerebro == Organo.DOLOR && estadoRiñonIzq == Organo.PERJUDICADO
-					&& estadoRiñonDer == Organo.PERJUDICADO) {
-				// Si tiene Malaria guardamos su código en el array y aumentamos en 1 el
-				// contador
-				codigos[contador] = 1;
-				contador++;
-			}
-			if (estadoOido == Organo.PERJUDICADO && estadoCerebro == Organo.PERJUDICADO) {
-				// Si tiene Parkinson guardamos su código en el array y aumentamos en 1 el
-				// contador
-				codigos[contador] = 2;
-				contador++;
-			}
-			if (estadoCerebro == Organo.DOLOR && estadoPulmonIzq == Organo.PERJUDICADO
-					&& estadoPulmonDer == Organo.PERJUDICADO) {
-				// Si tiene Bronquitis guardamos su código en el array y aumentamos en 1 el
-				// contador
-				codigos[contador] = 3;
-				contador++;
-			}
-			if (estadoCerebro == Organo.DOLOR && estadoEstomago == Organo.DOLOR && estadoPulmonDer == Organo.DOLOR
-					&& estadoPulmonIzq == Organo.DOLOR) {
-				// Si tiene Gripe guardamos su código en el array y aumentamos en 1 el
-				// contador
-				codigos[contador] = 4;
-				contador++;
-			}
-			if (oncologia()) {
-				// Si tiene Cáncer guardamos su código en el array y aumentamos en 1 el
-				// contador
-				codigos[contador] = 5;
-				contador++;
-			}
-		} else {
-			// Si no tiene ninuna enfermedad, hacemos que el array solo tenga una posición
-			// que tendrá el código de Sano
-			codigos = new int[1];
+		// Si no tiene enfermedades ponemos sano en la posicion 0
+		if (contador == 0) {
 			codigos[0] = 6;
 		}
-		// Devolvemos la lista de códigos
+		// Devolvemos los codigos
 		return codigos;
 	}
 
